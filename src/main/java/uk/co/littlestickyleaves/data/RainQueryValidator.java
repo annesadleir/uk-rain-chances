@@ -1,0 +1,74 @@
+package uk.co.littlestickyleaves.data;
+
+import uk.co.littlestickyleaves.domain.RainChancesException;
+import uk.co.littlestickyleaves.domain.RainQuery;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
+
+/**
+ * [Thing] to do [what] for [other]
+ * -- stuff
+ * -- more stuff
+ */
+// TODO fill in Javadoc
+
+public class RainQueryValidator {
+
+    private Clock clock;
+
+    public RainQueryValidator(Clock clock) {
+        this.clock = clock;
+    }
+
+    public void validate(RainQuery rainQuery) {
+        if (rainQuery == null) {
+            throw new RainChancesException("Invalid query: try " + EXAMPLE);
+        }
+
+        if (rainQuery.getNextHours() != null) {
+            validateNextHours(rainQuery);
+        } else {
+            validateStartAndEnd(rainQuery);
+        }
+
+    }
+
+    private void validateStartAndEnd(RainQuery rainQuery) {
+        LocalDateTime start = rainQuery.getStart();
+        LocalDateTime end = rainQuery.getEnd();
+
+        if (start == null || end == null) {
+            exceptionIncludingExample("Invalid query");
+        }
+
+        if (start.isAfter(end)) {
+            rainQuery.setEnd(end.plusDays(1));
+        }
+
+        LocalDate startDate = start.toLocalDate();
+        LocalDate endDate = end.toLocalDate();
+        LocalDate today = LocalDate.now(clock);
+        LocalDate tomorrow = today.plusDays(1);
+
+
+        if ((!startDate.isEqual(today) && !startDate.isEqual(tomorrow))
+                || (!endDate.isEqual(today) && !endDate.isEqual(tomorrow))) {
+            exceptionIncludingExample("Data only available for today and tomorrow");
+        }
+    }
+
+    private void validateNextHours(RainQuery rainQuery) {
+        if (rainQuery.getNextHours() < 0 || rainQuery.getNextHours() > 24) {
+            throw new RainChancesException("I don't do data for a period of " + rainQuery.getNextHours()
+                    + ". Try " + EXAMPLE);
+        }
+    }
+
+    private void exceptionIncludingExample(String prefix) {
+        throw new RainChancesException(prefix + ". Try " + EXAMPLE);
+    }
+}
