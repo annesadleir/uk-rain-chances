@@ -6,6 +6,7 @@ import uk.co.littlestickyleaves.control.RainChancesControllerSupplier;
 import uk.co.littlestickyleaves.domain.RainChancesException;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,11 +36,9 @@ public class IntentToRainQueryConverter {
             throw new RainChancesException("Insufficient location information.  Try " + EXAMPLE);
         }
 
-        try {
+        if (intent.getSlot("hours") != null && intent.getSlot("hours").getValue() != null) {
             Integer nextHours = Integer.parseInt(intent.getSlot("hours").getValue());
             return new RainQuery(locationSlot.getValue(), nextHours, null, null);
-        } catch (NullPointerException npe) {
-            // npe means just move on
         }
 
         Slot dateSlot = intent.getSlot("date");
@@ -51,12 +50,21 @@ public class IntentToRainQueryConverter {
         }
 
         LocalDate localDate = LocalDate.parse(dateSlot.getValue());
-        LocalTime startTime = LocalTime.parse(startSlot.getValue());
-        LocalTime endTime = LocalTime.parse(endSlot.getValue());
+        LocalTime startTime = parseAsTime(startSlot.getValue());
+        LocalTime endTime = parseAsTime(endSlot.getValue());
 
         return new RainQuery(locationSlot.getValue(), null,
                 LocalDateTime.of(localDate, startTime),
                 LocalDateTime.of(localDate, endTime));
+    }
+
+    private static LocalTime parseAsTime(String value) {
+        try {
+            Integer hourOfDay = Integer.parseInt(value);
+            return LocalTime.of(hourOfDay, 0);
+        } catch (NumberFormatException exception) {
+            return LocalTime.parse(value);
+        }
     }
 
 }

@@ -48,9 +48,9 @@ public class RainChancesTextCreator {
     private String summaryOfDiffering(Map<Percentages, TreeSet<LocalDateTime>> groupedData) {
         TreeSet<Percentages> keys = new TreeSet<>(groupedData.keySet());
 
-        return  " The highest chance of rain is " + keys.last().getOutput()
+        return  "The highest chance of rain is " + keys.last().getOutput()
                 + " at " + timesAsSpeech(groupedData.get(keys.last()))
-                + " and the lowest chance is " + keys.first().getOutput()
+                + ", and the lowest chance is " + keys.first().getOutput()
                 + " at " + timesAsSpeech(groupedData.get(keys.first()));
     }
 
@@ -64,7 +64,8 @@ public class RainChancesTextCreator {
             times.remove(listSize - 1);
             times.add("and " + last);
         }
-        return times.stream().collect(Collectors.joining(", "));
+        String delimiter = listSize == 2 ? " " : ", ";
+        return times.stream().collect(Collectors.joining(delimiter));
     }
 
     private String summaryOfIdentical(Map<Percentages, TreeSet<LocalDateTime>> groupedData) {
