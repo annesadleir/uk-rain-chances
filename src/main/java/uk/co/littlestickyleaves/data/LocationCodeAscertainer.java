@@ -7,7 +7,6 @@ import uk.co.littlestickyleaves.domain.LocationCode;
 import uk.co.littlestickyleaves.domain.RainChancesException;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.List;
 
 /**
@@ -17,12 +16,13 @@ import java.util.List;
  */
 public class LocationCodeAscertainer {
 
-    private static final String searchUrl = "http://www.metoffice.gov.uk/mobile/location-search/sitename";
     private static final String SEARCH_LOCATION_KEY = "searchLocation";
 
-    private List<LocationCode> locationCodes;
+    private final String searchUrl;
+    private final List<LocationCode> locationCodes;
 
-    public LocationCodeAscertainer(List<LocationCode> locationCodes) {
+    public LocationCodeAscertainer(String searchUrl, List<LocationCode> locationCodes) {
+        this.searchUrl = searchUrl;
         this.locationCodes = locationCodes;
     }
 

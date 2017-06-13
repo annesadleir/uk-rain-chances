@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class RainChancesTextCreator {
 
-    public static final String SHORT_DATE_PATTERN = "EEEE 'the' ddd";
+    private static final String SHORT_DATE_PATTERN = "EEEE 'the' ddd";
     private static final String LONG_DATE_PATTERN = SHORT_DATE_PATTERN + " 'of' MMMM";
     private static final String TIME_PATTERN = "h a";
 

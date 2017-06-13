@@ -11,7 +11,7 @@ import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXA
 
 /**
  * Makes sure a Rain Query has enough information
- * -- maybe a bit redundant, a remnant of fast piecemeal development
+ * -- some of this may be a bit redundant, a remnant of fast piecemeal development
  */
 public class RainQueryValidator {
 

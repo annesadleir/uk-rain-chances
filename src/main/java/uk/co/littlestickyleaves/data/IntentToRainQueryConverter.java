@@ -2,16 +2,12 @@ package uk.co.littlestickyleaves.data;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
-import uk.co.littlestickyleaves.control.RainChancesControllerSupplier;
 import uk.co.littlestickyleaves.domain.RainChancesException;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.function.Function;
 
 import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
 

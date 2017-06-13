@@ -31,6 +31,10 @@ public class TimedDataSelector implements BiFunction<RainQuery, TreeSet<Percenta
         LocalDateTime start = rainQuery.getStart();
         LocalDateTime end = rainQuery.getEnd();
 
+        if (start.isBefore(fullData.first().getLocalDateTime())) {
+            throw new RainChancesException("Your request period starts before the available data, perhaps in the past!");
+        }
+
         return fullData.stream()
                 .filter(percentageAtTime -> !percentageAtTime.getLocalDateTime().isBefore(start))
                 .filter(percentageAtTime -> !percentageAtTime.getLocalDateTime().isAfter(end))

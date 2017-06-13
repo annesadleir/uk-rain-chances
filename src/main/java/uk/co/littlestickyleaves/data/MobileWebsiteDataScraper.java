@@ -18,25 +18,27 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EUROPE_LONDON;
+
 /**
  * Retrieves rain probability data from the Met Office website
  * -- needs to be given the website key
  */
 public class MobileWebsiteDataScraper {
 
-    private static final ZoneId EUROPE_LONDON = ZoneId.of("Europe/London");
-    private static final String URI = "http://www.metoffice.gov.uk/mobile/forecast/";
     private static final String DAY_MODULE_ATTRIBUTE_PATTERN = "dayModule weatherDay\\d fcTime(\\d*)";
     private static final String ERROR_APOLOGY = "Sorry, something has gone wrong with collection of data from the Met Office website";
 
+    private final String dataUri;
     private final Pattern dayModulePattern;
 
-    public MobileWebsiteDataScraper() {
+    public MobileWebsiteDataScraper(String dataUri) {
+        this.dataUri = dataUri;
         dayModulePattern = Pattern.compile(DAY_MODULE_ATTRIBUTE_PATTERN);
     }
 
     public TreeSet<PercentageAtTime> dataFromDocument(LocationCode locationCode) {
-        return fetchData(URI + locationCode.getLocationCode())
+        return fetchData(dataUri + locationCode.getLocationCode())
                 .getElementById("weatherHolder")
                 .children()
                 .stream()

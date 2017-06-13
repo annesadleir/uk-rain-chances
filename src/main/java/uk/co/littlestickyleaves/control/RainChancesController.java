@@ -8,9 +8,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Controller handles the logic for the whole application
+ * -- turns an Exception into a speech output
  */
 public class RainChancesController {
 

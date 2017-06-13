@@ -2,29 +2,30 @@ package uk.co.littlestickyleaves;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import uk.co.littlestickyleaves.domain.EnglishOutput;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class RainChancesHandlerFullTest {
+@Ignore
+// not really a test more a way of trying it out
+public class RainChancesHandlerFullTest {
 
     private RainChancesHandler testObject;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         testObject = new RainChancesHandler();
     }
 
     @Test
-    void handleRequest() throws JsonProcessingException {
+    public void handleRequest() throws JsonProcessingException {
         // arrange
         RainQuery rainQuery = new RainQuery(
                 "Exeter", 5, null, null
@@ -40,12 +41,12 @@ class RainChancesHandlerFullTest {
     }
 
     @Test
-    void handleRequestWellington() throws JsonProcessingException {
+    public void handleRequestWellington() throws JsonProcessingException {
         // arrange
         RainQuery rainQuery = new RainQuery(
-                "Wellington", null,
-                LocalDateTime.of(2017, Month.JUNE, 13, 8, 0),
-                LocalDateTime.of(2017, Month.JUNE, 13, 11, 0)
+                "Inverness", null,
+                LocalDateTime.of(2017, Month.JUNE, 14, 8, 0),
+                LocalDateTime.of(2017, Month.JUNE, 14, 11, 0)
         );
 
         // act
