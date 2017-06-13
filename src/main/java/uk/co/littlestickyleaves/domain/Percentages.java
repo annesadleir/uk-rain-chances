@@ -3,21 +3,21 @@ package uk.co.littlestickyleaves.domain;
 import java.util.stream.Stream;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Defines the different percentage chances of rain on the Met Office mobile website
+ * -- in severity order
+ * -- has a reading-in value for web scraping
+ * -- has an output value for speech representation
  */
-// TODO Javadoc
 public enum Percentages {
 
     LESS_THAN_FIVE("<5%", "less than five percent"),
     TEN("10%", "roughly ten percent"),
     TWENTY("20%", "roughly twenty percent"),
-    THIRTY("30%", "roughly ten percent"),
-    FORTY("40%", "roughly ten percent"),
-    FIFTY("50%", "roughly ten percent"),
-    SIXTY("60%", "roughly ten percent"),
-    SEVENTY("70%", "roughly ten percent"),
+    THIRTY("30%", "roughly thirty percent"),
+    FORTY("40%", "roughly forty percent"),
+    FIFTY("50%", "roughly fifty percent"),
+    SIXTY("60%", "roughly sixty percent"),
+    SEVENTY("70%", "roughly seventy percent"),
     EIGHTY("80%", "roughly eighty percent"),
     NINETY("90%", "roughly ninety percent"),
     MORE_THAN_NINETY(">95%", "more than ninety-five percent");

@@ -4,11 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Pairs a percentage with a time
+ * -- sorts on time alone
  */
-// TODO Javadoc
 public class PercentageAtTime implements Comparable<PercentageAtTime> {
 
     private final LocalDateTime localDateTime;

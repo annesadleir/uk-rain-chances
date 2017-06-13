@@ -1,14 +1,10 @@
 package uk.co.littlestickyleaves.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Contains all necessary information about a query
  */
-// TODO Javadoc
 public class RainQuery {
 
     private String location;
