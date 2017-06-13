@@ -2,12 +2,13 @@ package uk.co.littlestickyleaves;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.Charsets;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import uk.co.littlestickyleaves.domain.EnglishOutput;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -30,14 +31,21 @@ public class RainChancesHandlerFullTest {
         RainQuery rainQuery = new RainQuery(
                 "Exeter", 5, null, null
         );
+        String json = objectMapper.writeValueAsString(rainQuery);
 
-        // act
-        EnglishOutput result = testObject.handleRequest(rainQuery, null);
+        try (InputStream inputStream = new ByteArrayInputStream(json.getBytes(Charsets.UTF_8));
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
-        // assert
-        System.out.println(result.getText());
-        System.out.println(objectMapper.writeValueAsString(rainQuery));
+            // act
+            testObject.handleRequest(inputStream, outputStream, null);
 
+            // assert
+            System.out.println(outputStream.toString("UTF-8"));
+            System.out.println(json);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -49,12 +57,21 @@ public class RainChancesHandlerFullTest {
                 LocalDateTime.of(2017, Month.JUNE, 14, 11, 0)
         );
 
-        // act
-        EnglishOutput result = testObject.handleRequest(rainQuery, null);
+        String json = objectMapper.writeValueAsString(rainQuery);
 
-        // assert
-        System.out.println(result.getText());
-        System.out.println(objectMapper.writeValueAsString(rainQuery));
+        try (InputStream inputStream = new ByteArrayInputStream(json.getBytes(Charsets.UTF_8));
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            // act
+            testObject.handleRequest(inputStream, outputStream, null);
+
+            // assert
+            System.out.println(outputStream.toString("UTF-8"));
+            System.out.println(json);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

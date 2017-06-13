@@ -1,5 +1,8 @@
 package uk.co.littlestickyleaves.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.LocalDateTime;
 
 /**
@@ -11,8 +14,12 @@ public class RainQuery {
 
     private Integer nextHours;
 
+    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
+    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
     private LocalDateTime start;
 
+    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
+    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
     private LocalDateTime end;
 
     public RainQuery() {

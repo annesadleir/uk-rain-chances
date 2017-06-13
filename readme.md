@@ -15,7 +15,8 @@ It has some locations hard-coded but otherwise it looks for a location with the 
 
 ### Designed to be a lambda
 Has two separate entry points:
-1. the RainChancesHandler which implements RequestHandler<RainQuery, EnglishOutput>, for standard lambda deployment
+1. the RainChancesHandler which implements RequestStreamHandler for standard lambda deployment: expects a Json RainQuery in format
+`{"location":"location","nextHours":8,"start":"2017-06-15T10:00","end":"2017-06-15T14:00"}`
 2. the RainChanceSpeechletRequestStreamHandler for use in Alexa.
 
 #### Alexa set-up
