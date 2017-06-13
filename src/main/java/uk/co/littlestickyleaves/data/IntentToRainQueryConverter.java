@@ -16,16 +16,12 @@ import java.util.function.Function;
 import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Utility to convert an Intent to a RainQuery
+ * -- future work could make sure this covers all the input options, which are varied
+ * -- https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference#date
+ * -- https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference#time
  */
-// TODO fill in Javadoc
-
 public class IntentToRainQueryConverter {
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE;
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
 
     private IntentToRainQueryConverter() {
     }
@@ -58,6 +54,8 @@ public class IntentToRainQueryConverter {
                 LocalDateTime.of(localDate, endTime));
     }
 
+    // time can come in as different formats
+    // this could possibly be more defensive and thorough
     private static LocalTime parseAsTime(String value) {
         try {
             Integer hourOfDay = Integer.parseInt(value);

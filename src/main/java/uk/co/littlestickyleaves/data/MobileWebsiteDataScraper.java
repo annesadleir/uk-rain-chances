@@ -6,11 +6,10 @@ import org.jsoup.nodes.Element;
 import uk.co.littlestickyleaves.domain.LocationCode;
 import uk.co.littlestickyleaves.domain.Percentages;
 import uk.co.littlestickyleaves.domain.PercentageAtTime;
+import uk.co.littlestickyleaves.domain.RainChancesException;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.*;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -20,15 +19,21 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Retrieves rain probability data from the Met Office website
+ * -- needs to be given the website key
  */
-// TODO Javadoc
 public class MobileWebsiteDataScraper {
 
     private static final ZoneId EUROPE_LONDON = ZoneId.of("Europe/London");
-    private static final String URI = "http://www.metoffice.gov.uk/mobile/forecast/gcj2x8gt4";
+    private static final String URI = "http://www.metoffice.gov.uk/mobile/forecast/";
+    private static final String DAY_MODULE_ATTRIBUTE_PATTERN = "dayModule weatherDay\\d fcTime(\\d*)";
+    private static final String ERROR_APOLOGY = "Sorry, something has gone wrong with collection of data from the Met Office website";
+
+    private final Pattern dayModulePattern;
+
+    public MobileWebsiteDataScraper() {
+        dayModulePattern = Pattern.compile(DAY_MODULE_ATTRIBUTE_PATTERN);
+    }
 
     public TreeSet<PercentageAtTime> dataFromDocument(LocationCode locationCode) {
         return fetchData(URI + locationCode.getLocationCode())
@@ -44,8 +49,7 @@ public class MobileWebsiteDataScraper {
         try {
             return Jsoup.connect(uri).get();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
-            // TODO better exception
+            throw new RainChancesException(ERROR_APOLOGY);
         }
     }
 
@@ -55,9 +59,10 @@ public class MobileWebsiteDataScraper {
         List<Percentages> percentages = extractListOfPercentages(element);
 
         if (hours.size() != percentages.size()) {
-            throw new IllegalArgumentException("bad data"); // TODO better exception
+            throw new RainChancesException(ERROR_APOLOGY);
         }
 
+        // a zip method would make this easier!
         return IntStream.range(0, hours.size())
                 .boxed()
                 .map(i -> new PercentageAtTime(LocalDateTime.of(localDate, hours.get(i)), percentages.get(i)));
@@ -84,17 +89,15 @@ public class MobileWebsiteDataScraper {
                 .collect(Collectors.toList());
     }
 
-    private static LocalDate extractLocalDate(Element element) {
+    private LocalDate extractLocalDate(Element element) {
         String dayModule = element.attributes().get("class");
-        String regex = "dayModule weatherDay\\d fcTime(\\d*)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(dayModule);
+        Matcher matcher = dayModulePattern.matcher(dayModule);
         if (matcher.find()) {
             String seconds = matcher.group(1);
             Long secondsLong = Long.parseLong(seconds);
             return LocalDateTime.ofInstant(Instant.ofEpochSecond(secondsLong), EUROPE_LONDON).toLocalDate();
         } else {
-            throw new IllegalArgumentException("no match");
+            throw new RainChancesException(ERROR_APOLOGY);
         }
     }
 }

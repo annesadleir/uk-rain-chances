@@ -48,7 +48,7 @@ public class RainChancesController {
             TreeSet<PercentageAtTime> fullData = mobileWebsiteDataScraper.dataFromDocument(locationCode);
 
             // select the right time data
-            TreeSet<PercentageAtTime> selectedData = timedDataSelector.select(rainQuery, fullData);
+            TreeSet<PercentageAtTime> selectedData = timedDataSelector.apply(rainQuery, fullData);
 
             // convert it into text
             String output = rainChancesTextCreator.createText(rainQuery, selectedData);

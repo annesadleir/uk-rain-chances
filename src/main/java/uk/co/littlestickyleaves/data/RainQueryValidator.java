@@ -10,12 +10,9 @@ import java.time.LocalDateTime;
 import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Makes sure a Rain Query has enough information
+ * -- maybe a bit redundant, a remnant of fast piecemeal development
  */
-// TODO fill in Javadoc
-
 public class RainQueryValidator {
 
     private Clock clock;
@@ -26,7 +23,7 @@ public class RainQueryValidator {
 
     public void validate(RainQuery rainQuery) {
         if (rainQuery == null) {
-            throw new RainChancesException("Invalid query: try " + EXAMPLE);
+            exceptionIncludingExample("Invalid query");
         }
 
         if (rainQuery.getNextHours() != null) {
@@ -63,8 +60,8 @@ public class RainQueryValidator {
 
     private void validateNextHours(RainQuery rainQuery) {
         if (rainQuery.getNextHours() < 0 || rainQuery.getNextHours() > 24) {
-            throw new RainChancesException("I don't do data for a period of " + rainQuery.getNextHours()
-                    + ". Try " + EXAMPLE);
+            exceptionIncludingExample("I don't do data for a period of " + rainQuery.getNextHours()
+                    + ". ");
         }
     }
 

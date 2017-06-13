@@ -10,11 +10,10 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Converts rain chances data into text
+ * -- uses my EnglishOrdinalDateFormatter code!
+ * -- could be improved by, e.g. summarising ranges of times with the same probability
  */
-// TODO Javadoc
 public class RainChancesTextCreator {
 
     public static final String SHORT_DATE_PATTERN = "EEEE 'the' ddd";
@@ -54,6 +53,7 @@ public class RainChancesTextCreator {
                 + " at " + timesAsSpeech(groupedData.get(keys.first()));
     }
 
+    // essentially handles time formatting and commas (non-Oxford)
     private String timesAsSpeech(TreeSet<LocalDateTime> localDateTimes) {
         List<String> times = localDateTimes.stream()
                 .map(TIME_FORMATTER::format)

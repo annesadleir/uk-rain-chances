@@ -9,12 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * The handler for Alexa use
+ * -- sets up a SpeechletRequestStreamHandler with a specific Speechlet implementation
+ * -- also specifies the Alexa App id, which it gets from an environment variable
  */
-// TODO fill in Javadoc
-
 public class RainChanceSpeechletRequestStreamHandler extends SpeechletRequestStreamHandler {
 
     public RainChanceSpeechletRequestStreamHandler() {

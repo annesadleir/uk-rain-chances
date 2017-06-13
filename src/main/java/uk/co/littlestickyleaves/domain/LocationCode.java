@@ -1,11 +1,8 @@
 package uk.co.littlestickyleaves.domain;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Just holds a Location name and Location's code on the Met Office mobile website
  */
-// TODO Javadoc
 public class LocationCode {
 
     private String locationName;

@@ -15,16 +15,13 @@ import java.time.LocalDateTime;
 import java.util.function.Supplier;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * The Speechlet implementation which deals with the Alexa input
+ * -- handles session start, end, welcome, help etc
+ * -- for a RainChancesQuery intent, gets a RainChancesController and hands off to that
  */
-// TODO Javadoc
 public class RainChancesSpeechlet implements Speechlet {
 
     private static final Logger log = LoggerFactory.getLogger(RainChancesSpeechlet.class);
-
-    private RainChancesHandler rainChancesHandler;
 
     private Supplier<RainChancesController> rainChancesControllerSupplier;
 
@@ -32,7 +29,6 @@ public class RainChancesSpeechlet implements Speechlet {
     public void onSessionStarted(SessionStartedRequest sessionStartedRequest, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", sessionStartedRequest.getRequestId(),
                 session.getSessionId());
-        rainChancesHandler = new RainChancesHandler();
         rainChancesControllerSupplier = new RainChancesControllerSupplier();
     }
 
@@ -49,18 +45,23 @@ public class RainChancesSpeechlet implements Speechlet {
                 session.getSessionId());
 
         Intent intent = intentRequest.getIntent();
-        String intentName = intent.getName();
 
-        if (intentName.equals("RainChancesQuery")) {
-            RainQuery rainQuery = IntentToRainQueryConverter.convertIntentToRainQuery(intent);
-            EnglishOutput output = rainChancesControllerSupplier.get().go(rainQuery);
-            return makeTellResponseWithCard(output.getText());
-        } else if (intentName.equals("AMAZON.HelpIntent")) {
-            return getWelcomeResponse();
-        } else {
-            PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
-            outputSpeech.setText("Goodbye");
-            return SpeechletResponse.newTellResponse(outputSpeech);
+        switch (intent.getName()) {
+            case "RainChancesQuery":
+                try {
+                    RainQuery rainQuery = IntentToRainQueryConverter.convertIntentToRainQuery(intent);
+                    EnglishOutput output = rainChancesControllerSupplier.get().go(rainQuery);
+                    return makeTellResponseWithCard(output.getText());
+                } catch (Exception e) {
+                    return makeTellResponseWithCard(e.getMessage());
+                }
+
+            case "AMAZON.HelpIntent":
+                return getWelcomeResponse();
+            default:
+                PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
+                outputSpeech.setText("Goodbye");
+                return SpeechletResponse.newTellResponse(outputSpeech);
         }
     }
 

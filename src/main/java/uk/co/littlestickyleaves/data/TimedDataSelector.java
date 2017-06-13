@@ -7,17 +7,17 @@ import uk.co.littlestickyleaves.domain.RainQuery;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Given a lump of data and a rain query, returns the data relevant to the query
+ * -- implements BiFunction because why not
  */
-// TODO Javadoc
-public class TimedDataSelector {
-    public TreeSet<PercentageAtTime> select(RainQuery rainQuery, TreeSet<PercentageAtTime> fullData) {
+public class TimedDataSelector implements BiFunction<RainQuery, TreeSet<PercentageAtTime>, TreeSet<PercentageAtTime>> {
 
+    @Override
+    public TreeSet<PercentageAtTime> apply(RainQuery rainQuery, TreeSet<PercentageAtTime> fullData) {
         Integer nextHours = rainQuery.getNextHours();
         if (nextHours != null) {
             if (nextHours > 24 ) {
@@ -36,4 +36,5 @@ public class TimedDataSelector {
                 .filter(percentageAtTime -> !percentageAtTime.getLocalDateTime().isAfter(end))
                 .collect(Collectors.toCollection(TreeSet::new));
     }
+
 }

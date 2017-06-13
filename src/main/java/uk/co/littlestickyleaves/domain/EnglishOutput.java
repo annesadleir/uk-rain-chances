@@ -1,11 +1,8 @@
 package uk.co.littlestickyleaves.domain;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * This is just a holder class to pass around text that's expected to be spoken as output by Alexa
  */
-// TODO Javadoc
 public class EnglishOutput {
 
     private String text;

@@ -10,11 +10,11 @@ import uk.co.littlestickyleaves.domain.RainQuery;
 import java.util.function.Supplier;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * This class is really just for testing the lambda
+ * -- if you set this as the handler on AWS lambda, you can test the input and output with json
+ * -- but for Alexa use, the Handler needs to be RainChanceSpeechletRequestStreamHandler
+ * -- also could be improved by making it a stream handler so it does json better
  */
-// TODO Javadoc
 public class RainChancesHandler implements RequestHandler<RainQuery, EnglishOutput> {
 
     private Supplier<RainChancesController> rainChancesControllerSupplier;

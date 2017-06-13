@@ -11,11 +11,10 @@ import java.io.UncheckedIOException;
 import java.util.List;
 
 /**
- * [Thing] to do [what] for [other]
- * -- stuff
- * -- more stuff
+ * Given a location name, finds a location code for the Met Office mobile website data
+ * -- starts with some hard-coded values
+ * -- otherwise looks it up, but will fail if it can't find an exact match, to prevent 'Budleigh' returning 'Butleigh'
  */
-// TODO fill in Javadoc
 public class LocationCodeAscertainer {
 
     private static final String searchUrl = "http://www.metoffice.gov.uk/mobile/location-search/sitename";
@@ -56,12 +55,11 @@ public class LocationCodeAscertainer {
         return new LocationCode(placeName, parts[parts.length - 1]);
     }
 
-
     private Document fetchData(String uri) {
         try {
             return Jsoup.connect(uri).get();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new RainChancesException("Unable to get location data from Met Office website");
         }
     }
 }

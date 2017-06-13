@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  */
 public class RainChancesControllerSupplier implements Supplier<RainChancesController> {
 
-    public static final String INVOCATION_NAME = "UK Rain Chances";
+    public static final String INVOCATION_NAME = "Rebecca's Rain Predictor";
 
     public static final String EXAMPLE = "For example, ask " + INVOCATION_NAME
             + " about Exeter tomorrow between two pm and six pm, or, ask "
