@@ -45,9 +45,9 @@ public class RainChancesTextCreator {
         TreeSet<Percentages> keys = new TreeSet<>(groupedData.keySet());
 
         return  "The highest chance of rain is " + keys.last().getOutput()
-                + " at " + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.last()))
+                + " " + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.last()))
                 + ", and the lowest chance is " + keys.first().getOutput()
-                + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.first()));
+                + " " + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.first()));
     }
 
     private String summaryOfIdentical(Map<Percentages, TreeSet<LocalDateTime>> groupedData) {
