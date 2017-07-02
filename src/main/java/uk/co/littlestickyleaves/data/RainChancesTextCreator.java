@@ -6,7 +6,6 @@ import uk.co.littlestickyleaves.domain.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -16,20 +15,18 @@ import java.util.stream.Collectors;
  */
 public class RainChancesTextCreator {
 
-    private static final String SHORT_DATE_PATTERN = "EEEE 'the' ddd";
-    private static final String LONG_DATE_PATTERN = SHORT_DATE_PATTERN + " 'of' MMMM";
-    private static final String TIME_PATTERN = "h a";
-
-    private static final EnglishOrdinalDateFormatter SHORT_DATE_FORMATTER =
-            EnglishOrdinalDateFormatter.ofPattern(SHORT_DATE_PATTERN);
-    private static final EnglishOrdinalDateFormatter LONG_DATE_FORMATTER =
-            EnglishOrdinalDateFormatter.ofPattern(LONG_DATE_PATTERN);
-    private static final EnglishOrdinalDateFormatter TIME_FORMATTER =
-            EnglishOrdinalDateFormatter.ofPattern(TIME_PATTERN);
-
     public String createText(RainQuery rainQuery, TreeSet<PercentageAtTime> selectedData) {
         return introduction(rainQuery, selectedData)
                 + summary(selectedData);
+    }
+
+    private String introduction(RainQuery rainQuery, TreeSet<PercentageAtTime> selectedData) {
+        TreeSet<LocalDateTime> times = selectedData.stream()
+                .map(PercentageAtTime::getLocalDateTime)
+                .collect(Collectors.toCollection(TreeSet::new));
+        return "Here are the chances of rain in "
+                + rainQuery.getLocation() + " on "
+                + FormatTimesForSpeechUtil.timeSpanAsSpeech(times);
     }
 
     private String summary(TreeSet<PercentageAtTime> selectedData) {
@@ -48,24 +45,9 @@ public class RainChancesTextCreator {
         TreeSet<Percentages> keys = new TreeSet<>(groupedData.keySet());
 
         return  "The highest chance of rain is " + keys.last().getOutput()
-                + " at " + timesAsSpeech(groupedData.get(keys.last()))
+                + " at " + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.last()))
                 + ", and the lowest chance is " + keys.first().getOutput()
-                + " at " + timesAsSpeech(groupedData.get(keys.first()));
-    }
-
-    // essentially handles time formatting and commas (non-Oxford)
-    private String timesAsSpeech(TreeSet<LocalDateTime> localDateTimes) {
-        List<String> times = localDateTimes.stream()
-                .map(TIME_FORMATTER::format)
-                .collect(Collectors.toList());
-        int listSize = times.size();
-        if (listSize > 1) {
-            String last = times.get(listSize - 1);
-            times.remove(listSize - 1);
-            times.add("and " + last);
-        }
-        String delimiter = listSize == 2 ? " " : ", ";
-        return times.stream().collect(Collectors.joining(delimiter));
+                + FormatTimesForSpeechUtil.summarise(groupedData.get(keys.first()));
     }
 
     private String summaryOfIdentical(Map<Percentages, TreeSet<LocalDateTime>> groupedData) {
@@ -76,29 +58,4 @@ public class RainChancesTextCreator {
                 .orElseThrow(() -> new RainChancesException("Terrible internal error"));
     }
 
-    private String introduction(RainQuery rainQuery, TreeSet<PercentageAtTime> selectedData) {
-        return "Here are the chances of rain in "
-                + rainQuery.getLocation() + " on "
-                 + dateString(selectedData)
-                + " from " + TIME_FORMATTER.format(selectedData.first().getLocalDateTime())
-                + " to " + TIME_FORMATTER.format(selectedData.last().getLocalDateTime()) + ": ";
-    }
-
-    private String dateString(TreeSet<PercentageAtTime> selectedData) {
-        TreeSet<LocalDate> datesCovered = selectedData.stream()
-                .map(percentageAtTime -> percentageAtTime.getLocalDateTime().toLocalDate())
-                .collect(Collectors.toCollection(TreeSet::new));
-
-        String prefix = "";
-        if (datesCovered.size() > 1) {
-            if (datesCovered.first().getMonth() != datesCovered.last().getMonth()) {
-                prefix = LONG_DATE_FORMATTER.format(datesCovered.first()) + " and ";
-            } else {
-                prefix = SHORT_DATE_FORMATTER.format(datesCovered.first()) + " and ";
-            }
-        }
-
-        return prefix + LONG_DATE_FORMATTER.format(datesCovered.last());
-
-    }
 }
