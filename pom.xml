@@ -17,6 +17,14 @@
 
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+
+
         <!-- easy html mining -->
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -24,12 +32,19 @@
             <version>1.10.2</version>
         </dependency>
 
-        <!-- alexa skills kit -->
+
         <dependency>
             <groupId>com.amazon.alexa</groupId>
             <artifactId>alexa-skills-kit</artifactId>
             <version>1.3.0</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- alexa skills kit v2 -->
+        <dependency>
+            <groupId>com.amazon.alexa</groupId>
+            <artifactId>ask-sdk</artifactId>
+            <version>2.3.4</version>
         </dependency>
 
         <!-- lambda dependencies -->

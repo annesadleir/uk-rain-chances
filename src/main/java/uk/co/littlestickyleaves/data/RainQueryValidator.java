@@ -61,7 +61,7 @@ public class RainQueryValidator {
     private void validateNextHours(RainQuery rainQuery) {
         if (rainQuery.getNextHours() < 0 || rainQuery.getNextHours() > 24) {
             exceptionIncludingExample("I don't do data for a period of " + rainQuery.getNextHours()
-                    + ". ");
+                    + " hours");
         }
     }
 

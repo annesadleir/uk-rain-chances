@@ -54,7 +54,7 @@ public class IntentToRainQueryConverter {
     // this could possibly be more defensive and thorough
     private static LocalTime parseAsTime(String value) {
         try {
-            Integer hourOfDay = Integer.parseInt(value);
+            int hourOfDay = Integer.parseInt(value);
             return LocalTime.of(hourOfDay, 0);
         } catch (NumberFormatException exception) {
             return LocalTime.parse(value);
