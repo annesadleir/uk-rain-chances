@@ -1,11 +1,10 @@
 package uk.co.littlestickyleaves;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.co.littlestickyleaves.control.RainChancesController;
 import uk.co.littlestickyleaves.control.RainChancesControllerSupplier;
+import uk.co.littlestickyleaves.control.RainChancesControllerTwo;
 import uk.co.littlestickyleaves.domain.EnglishOutput;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
@@ -22,7 +21,7 @@ import java.util.function.Supplier;
 public class RainChancesHandler implements RequestStreamHandler {
 
     private ObjectMapper objectMapper;
-    private Supplier<RainChancesController> rainChancesControllerSupplier;
+    private Supplier<RainChancesControllerTwo> rainChancesControllerSupplier;
 
     public RainChancesHandler() {
         this.objectMapper = new ObjectMapper();
@@ -32,7 +31,7 @@ public class RainChancesHandler implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
        RainQuery rainQuery = objectMapper.readValue(inputStream, RainQuery.class);
-       RainChancesController rainChancesController = rainChancesControllerSupplier.get();
+        RainChancesControllerTwo rainChancesController = rainChancesControllerSupplier.get();
        EnglishOutput englishOutput = rainChancesController.go(rainQuery);
        objectMapper.writeValue(outputStream, englishOutput);
     }

@@ -1,6 +1,7 @@
 package uk.co.littlestickyleaves.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 
 /**
@@ -9,25 +10,25 @@ import java.util.Comparator;
  */
 public class PercentageAtTime implements Comparable<PercentageAtTime> {
 
-    private final LocalDateTime localDateTime;
+    private final ZonedDateTime zonedDateTime;
 
-    private final Percentages percentages;
+    private final Percentage percentage;
 
-    public PercentageAtTime(LocalDateTime localDateTime, Percentages percentages) {
-        this.localDateTime = localDateTime;
-        this.percentages = percentages;
+    public PercentageAtTime(ZonedDateTime zonedDateTime, Percentage percentage) {
+        this.zonedDateTime = zonedDateTime;
+        this.percentage = percentage;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public ZonedDateTime getZonedDateTime() {
+        return zonedDateTime;
     }
 
-    public Percentages getPercentages() {
-        return percentages;
+    public Percentage getPercentage() {
+        return percentage;
     }
 
     @Override
     public int compareTo(PercentageAtTime o) {
-        return Comparator.comparing(PercentageAtTime::getLocalDateTime).compare(this, o);
+        return Comparator.comparing(PercentageAtTime::getZonedDateTime).compare(this, o);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Contains all necessary information about a query
@@ -14,18 +15,18 @@ public class RainQuery {
 
     private Integer nextHours;
 
-    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
-    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
-    private LocalDateTime start;
+//    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
+//    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
+    private ZonedDateTime start;
 
-    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
-    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
-    private LocalDateTime end;
+//    @JsonSerialize(using = CustomLocalDateTimeSerialization.Serializer.class)
+//    @JsonDeserialize(using = CustomLocalDateTimeSerialization.Deserializer.class)
+    private ZonedDateTime end;
 
     public RainQuery() {
     }
 
-    public RainQuery(String location, Integer nextHours, LocalDateTime start, LocalDateTime end) {
+    public RainQuery(String location, Integer nextHours, ZonedDateTime start, ZonedDateTime end) {
         this.location = location;
         this.nextHours = nextHours;
         this.start = start;
@@ -40,11 +41,11 @@ public class RainQuery {
         this.nextHours = nextHours;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(ZonedDateTime start) {
         this.start = start;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(ZonedDateTime end) {
         this.end = end;
     }
 
@@ -56,11 +57,11 @@ public class RainQuery {
         return nextHours;
     }
 
-    public LocalDateTime getStart() {
+    public ZonedDateTime getStart() {
         return start;
     }
 
-    public LocalDateTime getEnd() {
+    public ZonedDateTime getEnd() {
         return end;
     }
 

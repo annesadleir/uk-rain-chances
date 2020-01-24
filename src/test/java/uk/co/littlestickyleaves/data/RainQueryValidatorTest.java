@@ -4,12 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
-import static org.junit.Assert.*;
+import java.time.*;
 
 /**
  * [Thing] to do [what] for [other]
@@ -24,7 +19,7 @@ public class RainQueryValidatorTest {
 
     private Clock clock = Clock.fixed(Instant.ofEpochMilli(1497344400000L), ZoneId.of("Europe/London"));
 
-    private LocalDateTime localDateTime = LocalDateTime.now(clock);
+    private ZonedDateTime zonedDateTime = ZonedDateTime.now(clock);
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +30,7 @@ public class RainQueryValidatorTest {
     public void valid() throws Exception {
         // arrange
         RainQuery rainQuery = new RainQuery("location", null,
-                localDateTime.plusHours(3), localDateTime.plusHours(6));
+                zonedDateTime.plusHours(3), zonedDateTime.plusHours(6));
 
         // act
         testObject.validate(rainQuery);

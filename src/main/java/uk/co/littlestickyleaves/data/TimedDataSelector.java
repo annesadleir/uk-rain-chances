@@ -5,7 +5,7 @@ import uk.co.littlestickyleaves.domain.RainChancesException;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
 import java.time.LocalDateTime;
-import java.util.TreeMap;
+import java.time.ZonedDateTime;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -28,16 +28,16 @@ public class TimedDataSelector implements BiFunction<RainQuery, TreeSet<Percenta
                     .collect(Collectors.toCollection(TreeSet::new));
         }
 
-        LocalDateTime start = rainQuery.getStart();
-        LocalDateTime end = rainQuery.getEnd();
+        ZonedDateTime start = rainQuery.getStart();
+        ZonedDateTime end = rainQuery.getEnd();
 
-        if (start.isBefore(fullData.first().getLocalDateTime())) {
+        if (start.isBefore(fullData.first().getZonedDateTime())) {
             throw new RainChancesException("Your request period starts before the available data, perhaps in the past!");
         }
 
         return fullData.stream()
-                .filter(percentageAtTime -> !percentageAtTime.getLocalDateTime().isBefore(start))
-                .filter(percentageAtTime -> !percentageAtTime.getLocalDateTime().isAfter(end))
+                .filter(percentageAtTime -> !percentageAtTime.getZonedDateTime().isBefore(start))
+                .filter(percentageAtTime -> !percentageAtTime.getZonedDateTime().isAfter(end))
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 

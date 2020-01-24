@@ -17,11 +17,11 @@ import java.util.function.Supplier;
  * -- handles session start, end, welcome, help etc
  * -- for a RainChancesQuery intent, gets a RainChancesController and hands off to that
  */
-public class RainChancesSpeechletV2 implements SpeechletV2 {
+public class RainChancesSpeechletV2 implements Speechlet {
 
     private static final Logger log = LoggerFactory.getLogger(RainChancesSpeechletV2.class);
 
-    private Supplier<RainChancesController> rainChancesControllerSupplier;
+    private Supplier<RainChancesControllerTwo> rainChancesControllerSupplier;
 
     @Override
     public void onSessionStarted(SessionStartedRequest sessionStartedRequest, Session session) throws SpeechletException {

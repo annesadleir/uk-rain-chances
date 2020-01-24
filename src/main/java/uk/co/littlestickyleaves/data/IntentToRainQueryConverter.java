@@ -5,9 +5,7 @@ import com.amazon.speech.slu.Slot;
 import uk.co.littlestickyleaves.domain.RainChancesException;
 import uk.co.littlestickyleaves.domain.RainQuery;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
 
@@ -18,6 +16,8 @@ import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXA
  * -- https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference#time
  */
 public class IntentToRainQueryConverter {
+
+    private static final ZoneId UK = ZoneId.of("Europe/London");
 
     private IntentToRainQueryConverter() {
     }
@@ -44,10 +44,11 @@ public class IntentToRainQueryConverter {
         LocalDate localDate = LocalDate.parse(dateSlot.getValue());
         LocalTime startTime = parseAsTime(startSlot.getValue());
         LocalTime endTime = parseAsTime(endSlot.getValue());
+        ZonedDateTime startDateTime = ZonedDateTime.of(LocalDateTime.of(localDate, startTime), UK);
+        ZonedDateTime endDateTime = ZonedDateTime.of(LocalDateTime.of(localDate, endTime), UK);
 
         return new RainQuery(locationSlot.getValue(), null,
-                LocalDateTime.of(localDate, startTime),
-                LocalDateTime.of(localDate, endTime));
+               startDateTime, endDateTime);
     }
 
     // time can come in as different formats

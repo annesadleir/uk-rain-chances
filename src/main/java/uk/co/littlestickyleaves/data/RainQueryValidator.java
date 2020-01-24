@@ -6,6 +6,7 @@ import uk.co.littlestickyleaves.domain.RainQuery;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static uk.co.littlestickyleaves.control.RainChancesControllerSupplier.EXAMPLE;
 
@@ -35,8 +36,8 @@ public class RainQueryValidator {
     }
 
     private void validateStartAndEnd(RainQuery rainQuery) {
-        LocalDateTime start = rainQuery.getStart();
-        LocalDateTime end = rainQuery.getEnd();
+        ZonedDateTime start = rainQuery.getStart();
+        ZonedDateTime end = rainQuery.getEnd();
 
         if (start == null || end == null) {
             exceptionIncludingExample("Invalid query");

@@ -11,10 +11,14 @@ import uk.co.littlestickyleaves.domain.RainQuery;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Ignore
 // not really a test more a way of trying it out
 public class RainChancesHandlerFullTest {
+
+    private static final ZoneId UK = ZoneId.of("Europe/London");
 
     private RainChancesHandler testObject;
 
@@ -51,11 +55,11 @@ public class RainChancesHandlerFullTest {
     @Test
     public void handleRequestWellington() throws JsonProcessingException {
         // arrange
+        ZonedDateTime startTime = ZonedDateTime.of(2017, 6, 14, 8, 0, 0, 0, UK);
+        ZonedDateTime endTime = ZonedDateTime.of(2017, 6, 14, 11, 0, 0, 0, UK);
+
         RainQuery rainQuery = new RainQuery(
-                "Inverness", null,
-                LocalDateTime.of(2017, Month.JUNE, 14, 8, 0),
-                LocalDateTime.of(2017, Month.JUNE, 14, 11, 0)
-        );
+                "Inverness", null, startTime, endTime);
 
         String json = objectMapper.writeValueAsString(rainQuery);
 

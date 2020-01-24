@@ -1,9 +1,9 @@
 package uk.co.littlestickyleaves.control;
 
 import com.google.common.collect.Lists;
-import uk.co.littlestickyleaves.control.RainChancesController;
 import uk.co.littlestickyleaves.data.*;
 import uk.co.littlestickyleaves.domain.LocationCode;
+import uk.co.littlestickyleaves.helper.LongLatFinder;
 
 import java.time.Clock;
 import java.time.ZoneId;
@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * -- also has some constants for the application
  * -- idea is that it provides the application context
  */
-public class RainChancesControllerSupplier implements Supplier<RainChancesController> {
+public class RainChancesControllerSupplier implements Supplier<RainChancesControllerTwo> {
 
     public static final String INVOCATION_NAME = "Rebecca's Rain Predictor";
     public static final ZoneId EUROPE_LONDON = ZoneId.of("Europe/London");
@@ -27,22 +27,24 @@ public class RainChancesControllerSupplier implements Supplier<RainChancesContro
     private static final String DATA_URI = "http://www.metoffice.gov.uk/mobile/forecast/";
 
     @Override
-    public RainChancesController get() {
+    public RainChancesControllerTwo get() {
         RainQueryValidator rainQueryValidator = new RainQueryValidator(Clock.system(ZoneId.of("Europe/London")));
+
+        LongLatFinder longLatFinder = new LongLatFinder();
+
+        DataHubCaller dataHubCaller = new DataHubCaller();
 
         LocationCodeAscertainer locationCodeAscertainer = new LocationCodeAscertainer(
                 LOCATION_SEARCH_URI, existingLocationCodes());
-
-        MobileWebsiteDataScraper mobileWebsiteDataScraper = new MobileWebsiteDataScraper(DATA_URI);
 
         TimedDataSelector timedDataSelector = new TimedDataSelector();
 
         RainChancesTextCreator rainChancesTextCreator = new RainChancesTextCreator();
 
-        return new RainChancesController(
+        return new RainChancesControllerTwo(
                 rainQueryValidator,
-                locationCodeAscertainer,
-                mobileWebsiteDataScraper,
+                longLatFinder,
+                dataHubCaller,
                 timedDataSelector,
                 rainChancesTextCreator
         );

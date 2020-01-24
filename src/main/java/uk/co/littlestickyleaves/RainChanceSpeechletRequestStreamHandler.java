@@ -3,13 +3,7 @@ package uk.co.littlestickyleaves;
 import com.amazon.ask.Skill;
 import com.amazon.ask.SkillStreamHandler;
 import com.amazon.ask.Skills;
-import com.amazon.speech.speechlet.Speechlet;
-import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler;
-import com.google.common.collect.Sets;
-import uk.co.littlestickyleaves.control.RainChancesSpeechlet;
-
-import java.util.HashSet;
-import java.util.Set;
+import uk.co.littlestickyleaves.handlers.GenericExceptionHandler;
 
 /**
  * The handler for Alexa use
@@ -27,9 +21,9 @@ public class RainChanceSpeechletRequestStreamHandler extends SkillStreamHandler
     private static Skill getSkill() {
         return Skills.standard()
                 .addRequestHandlers()
-                .addExceptionHandler()
+                .addExceptionHandler(new GenericExceptionHandler())
                 .withAutoCreateTable(true)
-                .withSkillId(skillId)
+                .withSkillId("skillId")
                 .build();
     }
 

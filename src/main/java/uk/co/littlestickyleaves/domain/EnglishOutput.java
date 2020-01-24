@@ -1,7 +1,7 @@
 package uk.co.littlestickyleaves.domain;
 
 /**
- * This is just a holder class to pass around text that's expected to be spoken as output by an Alexa device
+ * This is just a holder class to pass around English text that's expected to be spoken as output by an Alexa device
  */
 public class EnglishOutput {
 

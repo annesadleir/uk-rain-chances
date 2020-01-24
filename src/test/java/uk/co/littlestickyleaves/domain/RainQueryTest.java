@@ -6,17 +6,21 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class RainQueryTest {
+
+    private static final ZoneId UK = ZoneId.of("Europe/London");
 
     @Test
     public void jsonRoundTrip() throws Exception {
 
         // arrange
         ObjectMapper objectMapper = new ObjectMapper();
-        RainQuery rainQuery = new RainQuery("location",
-                null, LocalDateTime.of(2017, Month.JUNE, 15, 10, 0, 0),
-                LocalDateTime.of(2017, Month.JUNE, 15, 14, 0, 0));
+        ZonedDateTime startTime =  ZonedDateTime.of(2017, 6, 15, 10, 0, 0, 0, UK);
+        ZonedDateTime endTime =  ZonedDateTime.of(2017, 6, 15, 14, 0, 0, 0, UK);
+        RainQuery rainQuery = new RainQuery("location",null, startTime, endTime);
 
         // act
         String serialized = objectMapper.writeValueAsString(rainQuery);

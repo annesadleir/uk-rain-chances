@@ -7,6 +7,7 @@ import uk.co.littlestickyleaves.domain.PercentageAtTime;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
@@ -31,7 +32,7 @@ public class FormatTimesForSpeechUtil {
     private static final EnglishOrdinalDateFormatter TIME_FORMATTER =
             EnglishOrdinalDateFormatter.ofPattern(TIME_PATTERN);
 
-    public static String summarise(TreeSet<LocalDateTime> localDateTimes) {
+    public static String summarise(TreeSet<ZonedDateTime> zonedDateTimes) {
 //        if (localDateTimes.size() == 1) {
 //            return TIME_FORMATTER.format(localDateTimes.first());
 //        }
@@ -40,7 +41,7 @@ public class FormatTimesForSpeechUtil {
 //            return TIME_FORMATTER.format(localDateTimes.first()) + " and " + TIME_FORMATTER.format(localDateTimes.last());
 //        }
 
-        List<String> times = splitIntoConsecutives(localDateTimes).stream()
+        List<String> times = splitIntoConsecutives(zonedDateTimes).stream()
                 .map(FormatTimesForSpeechUtil::formatSetOfTimes)
                 .collect(Collectors.toList());
 
@@ -54,7 +55,7 @@ public class FormatTimesForSpeechUtil {
         return times.stream().collect(Collectors.joining(delimiter));
     }
 
-    private static String formatSetOfTimes(TreeSet<LocalDateTime> set) {
+    private static String formatSetOfTimes(TreeSet<ZonedDateTime> set) {
         if (set.size() == 1) {
             return "at " + TIME_FORMATTER.format(set.first());
         } else {
@@ -62,32 +63,32 @@ public class FormatTimesForSpeechUtil {
         }
     }
 
-    private static List<TreeSet<LocalDateTime>> splitIntoConsecutives(TreeSet<LocalDateTime> localDateTimes) {
-        List<TreeSet<LocalDateTime>> split = new ArrayList<>();
-        TreeSet<LocalDateTime> currentSet = new TreeSet<>();
+    private static List<TreeSet<ZonedDateTime>> splitIntoConsecutives(TreeSet<ZonedDateTime> zonedDateTimes) {
+        List<TreeSet<ZonedDateTime>> split = new ArrayList<>();
+        TreeSet<ZonedDateTime> currentSet = new TreeSet<>();
         split.add(currentSet);
-        LocalDateTime previous = null;
+        ZonedDateTime previous = null;
 
-        for (LocalDateTime localDateTime : localDateTimes) {
-            if (previous != null && Duration.between(previous, localDateTime).getSeconds() > 3600) {
+        for (ZonedDateTime zonedDateTime : zonedDateTimes) {
+            if (previous != null && Duration.between(previous, zonedDateTime).getSeconds() > 3600) {
                 currentSet = new TreeSet<>();
                 split.add(currentSet);
             }
-            currentSet.add(localDateTime);
-            previous = localDateTime;
+            currentSet.add(zonedDateTime);
+            previous = zonedDateTime;
         }
         return split;
     }
 
-    public static String timeSpanAsSpeech(TreeSet<LocalDateTime> times) {
+    public static String timeSpanAsSpeech(TreeSet<ZonedDateTime> times) {
         return dateString(times)
                 + " from " + TIME_FORMATTER.format(times.first())
                 + " to " + TIME_FORMATTER.format(times.last()) + ": ";
     }
 
-    private static String dateString(TreeSet<LocalDateTime> times) {
+    private static String dateString(TreeSet<ZonedDateTime> times) {
         TreeSet<LocalDate> datesCovered = times.stream()
-                .map(LocalDateTime::toLocalDate)
+                .map(ZonedDateTime::toLocalDate)
                 .collect(Collectors.toCollection(TreeSet::new));
 
         String prefix = "";
